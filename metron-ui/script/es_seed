@@ -57,7 +57,7 @@ curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
 			      	"type": "long",
 					"precision_step" : 64
 			    },
-			    "src_addr": {
+			    "ip_src_addr": {
 			      	"type": "string",
 					"index": "not_analyzed",
 					"postings_format": "Lucene41"
@@ -66,7 +66,7 @@ curl -XPUT 'http://localhost:9200/pcap_all/' -d '{
 			      	"type": "long",
 					"precision_step" : 64
 			    },
-			    "dst_addr": {
+			    "ip_dst_addr": {
 			      	"type": "string",
 					"index": "not_analyzed",
 					"postings_format": "Lucene41"

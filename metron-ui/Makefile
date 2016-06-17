@@ -15,10 +15,10 @@
 # limitations under the License.
 
 
-testcmd=./node_modules/istanbul/lib/cli.js cover \
+testcmd=istanbul cover \
 	./node_modules/mocha/bin/_mocha -- --check-leaks -R spec
 
-testwatchcmd=./node_modules/istanbul/lib/cli.js cover \
+testwatchcmd=istanbul cover \
 	./node_modules/mocha/bin/_mocha -- --check-leaks --watch -R spec
 
 test: test-all

@@ -21,6 +21,12 @@
     "passport-ldapauth": "~0.5.0",
     "http-proxy": "~1.13.2",
     "xml-stream": "~0.4.5",
-    "serve-static": "~1.10.2"
+    "serve-static": "~1.10.2",
+    "chance": "~1.0.3",
+    "mocha": "~2.5.3",
+    "chai": "~3.5.0"
+  },
+  "devDependencies": {
+    "supertest": "~1.2.0"
   }
 }

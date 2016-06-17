@@ -1,6 +1,9 @@
 {
   "auth":false,
   "secret":"secret",
-  "elasticsearch": { "url": "http://host:port" },
-  "pcap": { "url": "http://host:port/pcapGetter","mock": false }
+  "elasticsearch": { "url": "http://192.168.33.10:9200" },
+  "permissions": {
+    "pcap": "cn=investigators,ou=groups,dc=metron,dc=dev"
+  },
+  "pcap": { "url": "http://host:port/pcapGetter","mock": true }
 }

@@ -29,9 +29,9 @@ var Chance = require('chance');
 var fs = require('fs');
 
 var chance = new Chance();
-var documentsPerIndex = 1000;
+var documentsPerIndex = 100000;
 var numEnrichedMachines = 100;
-var numOtherMachines = 200;
+var numOtherMachines = 2000;
 
 var oneMonthAgo = new Date();
 oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
@@ -40,11 +40,8 @@ var startTimestamp = oneMonthAgo.getTime();
 var endTimestamp = startTimestamp + (90 * 24 * 60 * 60 * 1000);
 var sources = [
   'bro',
-  'fireeye',
-  'lancope',
-  'qosmos',
-  'qradar',
-  'sourcefire'
+  'yaf',
+  'snort'
 ];
 
 
@@ -90,7 +87,20 @@ function randomAlert(source) {
     });
   }
 
+  var t = chance.integer({min: startTimestamp, max: endTimestamp})
+  var ip_dst_port = chance.integer({min: 22, max: 65535});
+  var ip_src_port = chance.integer({min: 22, max: 65535});
+  var original_string= chance.paragraph()
   return {
+    timestamp: t,
+    is_alert:true,
+    ip_dst_addr: dst.ip,
+    ip_src_addr: src.ip,
+    ip_dst_port: ip_dst_port,
+    ip_src_port: ip_src_port,
+    protocol: protocolMap[protocol],
+    original_string: original_string,
+
     alerts: {
       identifier: {
         topology: {
@@ -108,11 +118,11 @@ function randomAlert(source) {
     message: {
       ip_dst_addr: dst.ip,
       ip_src_addr: src.ip,
-      ip_dst_port: chance.integer({min: 22, max: 65535}),
-      ip_src_port: chance.integer({min: 22, max: 65535}),
+      ip_dst_port: ip_dst_port,
+      ip_src_port: ip_src_port,
       protocol: protocol,
-      original_string: chance.paragraph(),
-      timestamp: chance.integer({min: startTimestamp, max: endTimestamp})
+      original_string: original_string,
+      timestamp: t
     },
     enrichment: {
       geo: {
@@ -158,10 +168,11 @@ for (var i = 0; i < sources.length; i++) {
   var filename = source + '.json';
   var json = fs.createWriteStream('seed/es/' + filename);
   var objects = [];
+  console.log("got here",i,filename)
 
   for (var j = 0; j < documentsPerIndex; j++) {
     var index = source + '_index';
-    var type = source + '_type';
+    var type = source + '_doc';
     objects.push(JSON.stringify({index: {_index: index, _type: type}}));
 
     var alertData = randomAlert(source);
@@ -173,6 +184,7 @@ for (var i = 0; i < sources.length; i++) {
       ip_dst_addr: alertData.message.ip_dst_addr,
       ip_src_port: alertData.message.ip_src_port,
       ip_dst_port: alertData.message.ip_dst_port,
+      timestamp: alertData.message.timestamp,
       protocol: protocolMap[alertData.message.protocol],
       pcap_id: [
         ipToHex(alertData.message.ip_src_addr),
@@ -188,4 +200,6 @@ for (var i = 0; i < sources.length; i++) {
 
   json.write(objects.join('\n'));
   json.close();
+  console.log("closed",i,filename)
 }
+
