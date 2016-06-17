@@ -29,9 +29,9 @@ var Chance = require('chance');
 var fs = require('fs');
 
 var chance = new Chance();
-var documentsPerIndex = 100000;
+var documentsPerIndex = 10000;
 var numEnrichedMachines = 100;
-var numOtherMachines = 2000;
+var numOtherMachines = 200;
 
 var oneMonthAgo = new Date();
 oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
