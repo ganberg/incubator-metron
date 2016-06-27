@@ -42,4 +42,4 @@
     state=present
   with_items:
     - { regexp: '^# *server\.port:', line: 'server.port: 5000' }
-    - { regexp: '^# *elasticsearch\.url:', line: 'elasticsearch.url: http://{{ groups.search[0] }}:{{ elasticsearch_web_port }}' }
+    - { regexp: '^# *elasticsearch\.url:', line: 'elasticsearch.url: http://192.168.66.121:{{ elasticsearch_web_port }}' }

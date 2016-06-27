@@ -166,7 +166,7 @@ for (var i = 0; i < numOtherMachines; i++) {
 for (var i = 0; i < sources.length; i++) {
   var source = sources[i];
   var filename = source + '.json';
-  var json = fs.createWriteStream('seed/es/' + filename);
+  // var json = fs.createWriteStream('seed/es/' + filename);
   var objects = [];
   console.log("got here",i,filename)
 
@@ -198,8 +198,16 @@ for (var i = 0; i < sources.length; i++) {
     }));
   }
 
-  json.write(objects.join('\n'));
-  json.close();
-  console.log("closed",i,filename)
+  // json.write(objects.join('\n'));
+  // json.flush();
+  // json.close();
+  // console.log("closed",i,filename)
+  fs.writeFile('./seed/es/' + filename, objects.join('\n'), function(error) {
+    if (error) {
+      console.error("write error:  " + error.message);
+    } else {
+      console.log("closed",i,filename)
+    }
+  });
 }
 
